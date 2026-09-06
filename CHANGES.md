@@ -15,9 +15,22 @@ A chronological record of all changes made to the Aim Genius recruitment platfor
 - Set `project_id = "iqbysznagzljpeudoqwc"` in `supabase/config.toml` so the
   Supabase CLI can link to the project.
 
-### Verified project state
-- Supabase auth endpoint responds (project is live, anon key valid).
-- Database is still empty — none of the 7 tables exist yet. Schema not yet applied.
+### Applied the database schema
+- Ran `supabase/setup/01_schema.sql` in the SQL Editor of our own project. This
+  created all 7 tables, every RLS policy, the 3 trigger functions and their
+  triggers, all indexes, the 3 storage buckets, and the 12 storage policies.
+- No ownership errors on the `storage.objects` policies — section 6 applied cleanly.
+
+### Verified the schema from outside
+- All 7 tables reachable over the REST API: `profiles`, `candidates`,
+  `candidate_documents`, `candidate_requests`, `partner_shortlist`,
+  `partner_ready_for_process`, `candidate_videos`.
+- RLS confirmed enforcing: an anonymous read returns `[]` from every table, and an
+  anonymous INSERT into `candidates` is rejected with
+  `42501 new row violates row-level security policy`.
+- All 3 storage buckets confirmed present, with `candidate-photos` public and
+  `candidate-documents` / `candidate-videos` private.
+- Database currently holds no rows — no admin account exists yet.
 
 ---
 
