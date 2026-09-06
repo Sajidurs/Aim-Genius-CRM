@@ -1,6 +1,4 @@
-# Replace YOUR-PROJECT-REF with your Supabase project ref
-# (Dashboard -> Project Settings -> General -> Reference ID).
-project_id = "YOUR-PROJECT-REF"
+project_id = "iqbysznagzljpeudoqwc"
 
 [functions.create-partner]
 verify_jwt = true

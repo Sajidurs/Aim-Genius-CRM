@@ -4,6 +4,62 @@ A chronological record of all changes made to the Aim Genius recruitment platfor
 
 ---
 
+## September 6, 2026
+
+### Connected the app to our own Supabase project
+- Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env` to our own Supabase
+  project (ref `iqbysznagzljpeudoqwc`). Verified the production build inlines them.
+- Moved the credentials out of `.env.example` and back into `.env`. `.env.example`
+  is committed to git and is only a placeholder template; `.env` is gitignored and
+  is the file Vite actually loads. Restored `.env.example` to its placeholder values.
+- Set `project_id = "iqbysznagzljpeudoqwc"` in `supabase/config.toml` so the
+  Supabase CLI can link to the project.
+
+### Verified project state
+- Supabase auth endpoint responds (project is live, anon key valid).
+- Database is still empty — none of the 7 tables exist yet. Schema not yet applied.
+
+---
+
+## September 5, 2026
+
+### Published to GitHub
+- Pushed the repository to `https://github.com/Sajidurs/Aim-Genius-CRM` on branch `main`.
+- Confirmed `.env` is excluded from the remote; only `.env.example` is tracked.
+
+---
+
+## September 4, 2026
+
+### Detached the project from Bolt
+- Deleted the `.bolt/` directory (Bolt template metadata).
+- Replaced the `bolt.new` OG/Twitter image tags in `index.html` with our own logo,
+  and added `noindex, nofollow` since this is a private database.
+- Replaced the "Open in Bolt" badge in `README.md` with a full setup guide.
+- Renamed the package from `vite-react-typescript-starter` to
+  `aim-genius-recruitment-crm` and set version to 1.0.0.
+
+### Security
+- Removed the hardcoded demo admin credentials (`admin@recruit.de` / `Admin123!`)
+  that were rendered on the login page for every visitor. Replaced with an
+  invitation-only notice.
+- Added a guard in `src/lib/supabase.ts` that throws an actionable error when the
+  Supabase env vars are missing or still placeholders, instead of crashing with an
+  unclear message.
+
+### Self-hosting setup
+- Added `.env` and `.env.example`.
+- Added `supabase/setup/01_schema.sql` — all 9 migrations consolidated into a single
+  idempotent script to run in the SQL Editor of a fresh project.
+- Added `supabase/setup/02_create_first_admin.sql` — the manual bootstrap for the
+  first admin account, since the app has no signup screen and `handle_new_user`
+  always assigns the `recruiting_partner` role.
+- Added `vercel.json` (Vite preset, build command, SPA rewrites).
+- Extended `.gitignore` with `.env.local`, `supabase/.temp`, and `.vercel`.
+- Initialized the git repository on branch `main`.
+
+---
+
 ## September 3, 2026
 
 ### Documentation
