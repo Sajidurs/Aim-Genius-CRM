@@ -15,6 +15,16 @@ A chronological record of all changes made to the Aim Genius recruitment platfor
 - Set `project_id = "iqbysznagzljpeudoqwc"` in `supabase/config.toml` so the
   Supabase CLI can link to the project.
 
+### Fixed the white screen — lucide-react was not being pre-bundled
+- The Bolt template set `optimizeDeps.exclude = ['lucide-react']` in `vite.config.ts`.
+  That is a WebContainer-specific workaround and is harmful in local development:
+  it made the browser fetch all 1534 icon modules as individual requests, which
+  stalled the page on a blank white screen before React could mount.
+- Changed to `optimizeDeps.include = ['lucide-react']` and cleared `node_modules/.vite`.
+  Vite now serves one pre-bundled 1.1 MB file in ~50 ms instead of 1534 requests.
+- Note the tab title rendered correctly the whole time, which confirmed `index.html`
+  was being served fine and the failure was in module loading, not the server.
+
 ### Fixed the dev server being unreachable / rendering a blank page
 - `vite.config.ts` now sets `server.host = true` so the dev server listens on both
   IPv4 and IPv6. Vite's default on Windows binds only IPv6 `[::1]`, so browsers

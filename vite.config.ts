@@ -22,6 +22,10 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['lucide-react'],
+    // lucide-react was excluded from pre-bundling by the Bolt template, a
+    // WebContainer-specific workaround. Locally it forces the browser to fetch
+    // all 1534 icon modules individually, which stalls the page on a blank
+    // screen. Pre-bundling it collapses those into one request.
+    include: ['lucide-react'],
   },
 });
