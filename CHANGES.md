@@ -15,6 +15,17 @@ A chronological record of all changes made to the Aim Genius recruitment platfor
 - Set `project_id = "iqbysznagzljpeudoqwc"` in `supabase/config.toml` so the
   Supabase CLI can link to the project.
 
+### Fixed the dev server being unreachable / rendering a blank page
+- `vite.config.ts` now sets `server.host = true` so the dev server listens on both
+  IPv4 and IPv6. Vite's default on Windows binds only IPv6 `[::1]`, so browsers
+  that resolve `localhost` to `127.0.0.1` got a refused connection and a white
+  screen. Verified `127.0.0.1:5173`, `localhost:5173`, and `[::1]:5173` all return 200.
+- Added `server.strictPort = true`. Previously a second `npm run dev` would silently
+  fall back to port 5174, leaving two servers running and making it easy to open the
+  wrong one. It now fails with a clear error instead.
+- Ruled out during diagnosis: env vars were correctly inlined on both servers,
+  Tailwind was compiling, and every module transformed without error.
+
 ### Applied the database schema
 - Ran `supabase/setup/01_schema.sql` in the SQL Editor of our own project. This
   created all 7 tables, every RLS policy, the 3 trigger functions and their
