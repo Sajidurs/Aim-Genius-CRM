@@ -4,6 +4,28 @@ A chronological record of all changes made to the Aim Genius recruitment platfor
 
 ---
 
+## September 7, 2026
+
+### Deployed the create-partner edge function
+- `create-partner` is live at
+  `https://iqbysznagzljpeudoqwc.supabase.co/functions/v1/create-partner`.
+- Verified it responds `401 Unauthorized` to an anonymous token, which is the
+  function's own admin check rejecting a caller with no user session — the correct
+  behaviour, and proof the deployed code is ours.
+- Verified the CORS preflight (`OPTIONS`) returns 200 with
+  `Access-Control-Allow-Origin`, so the browser can call it from the app.
+- Note for future deploys: the Dashboard's "Deploy via editor" flow pre-fills a
+  random function name (it gave us `rapid-task` on the first attempt) and the slug
+  cannot be renamed afterwards. Deploy with
+  `supabase functions deploy create-partner` instead, which takes the name from the
+  folder.
+
+### Verified state at start of session
+- Supabase project live, all 7 tables intact, RLS still enforcing.
+- Admin account `info@myaimgenius.com` confirmed working.
+
+---
+
 ## September 6, 2026
 
 ### Connected the app to our own Supabase project
