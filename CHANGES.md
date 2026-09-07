@@ -6,6 +6,21 @@ A chronological record of all changes made to the Aim Genius recruitment platfor
 
 ## September 7, 2026
 
+### Fixed the dev server returning 431 Request Header Fields Too Large
+- The server was running fine, but rejecting browser requests before Vite saw them.
+  Node's default HTTP header limit is 16 KB, and cookies are not scoped by port, so
+  cookies left on `localhost` by any other project are all sent to port 5173 too.
+  Once they exceed 16 KB every request fails with 431 and the page will not load.
+- Changed the `dev` script to
+  `node --max-http-header-size=65536 ./node_modules/vite/bin/vite.js`, raising the
+  limit to 64 KB. Invoking Vite's bin directly lets the Node flag through without
+  needing `cross-env`, which a plain `NODE_OPTIONS=` prefix would have required on
+  Windows.
+- Reproduced before the fix (20 KB of cookies -> 431) and confirmed after
+  (20 KB and 30 KB -> 200).
+- Clearing cookies for `localhost` in the browser also resolves it, and is worth
+  doing since the underlying pile-up is still there.
+
 ### Deployed the create-partner edge function
 - `create-partner` is live at
   `https://iqbysznagzljpeudoqwc.supabase.co/functions/v1/create-partner`.
